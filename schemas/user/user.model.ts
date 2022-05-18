@@ -2,31 +2,37 @@ import { Schema, model } from "mongoose";
 import { IUser } from "../../types/user";
 interface IUserModel extends IUser, Document {}
 
-const userSchema = new Schema({
-	name: {
-		type: String,
-		required: [true, "Name is required for User"],
+const userSchema = new Schema(
+	{
+		name: {
+			type: String,
+			required: [true, "Name is required for User"],
+		},
+		email: {
+			type: String,
+			unique: [true, "Email already exists"],
+			required: [true, "Email is required for User"],
+		},
+		avatar: { type: String },
+		password: {
+			hash: String,
+			salt: String,
+		},
+		isVerified: {
+			type: Boolean,
+			default: false,
+		},
 	},
-	email: {
-		type: String,
-		unique: [true, "Email already exists"],
-		required: [true, "Email is required for User"],
-	},
-	avatar: { type: String },
-	password: {
-		hash: String,
-		salt: String,
-	},
+	{
+		timestamps: true,
+	}
+);
 
-	isVerified: {
-		type: Boolean,
-		default: false,
-	},
-});
 export interface HookNextFunction {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	(error?: Error): any;
 }
+
 //Middleware
 userSchema.post(
 	"save",

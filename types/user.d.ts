@@ -10,8 +10,9 @@ interface IUser {
 		hash: string;
 		salt: string;
 	};
-
 	isVerified?: boolean;
+	updatedAt: Date;
+	createdAt: Date;
 }
 
 interface ISignup {
