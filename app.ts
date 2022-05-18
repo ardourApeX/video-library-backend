@@ -2,6 +2,7 @@
 const express = require("express");
 import { Request, Response } from "express";
 const { Chalk } = require("./services/Chalk/chalk.service");
+require("./database/mongoConnection");
 const app = express();
 
 // Setting Port
@@ -13,7 +14,7 @@ const log = new Chalk();
 //@desc : Hello World
 //@access : Public
 app.get("/", (request: Request, response: Response) => {
-	response.send("I am alive!");
+	response.status(200).send("I am alive!");
 });
 
 //LISTENING ON PORT
