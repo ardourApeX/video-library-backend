@@ -15,17 +15,17 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//------------Mounting Routes------------
+
+// User Controllers
+app.use("/v1", userRoutes);
+
 //@route : /
 //@desc : Testing Route
 //@access : Public
 app.use("/", (request: Request, response: Response) => {
 	response.status(200).send("I am alive!");
 });
-
-//------------Mounting Routes------------
-
-// User Controllers
-app.use("/v1", userRoutes);
 
 //LISTENING ON PORT
 app.listen(PORT, () => {
