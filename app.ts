@@ -1,21 +1,31 @@
 "use strict";
+require("./database/mongoConnection"); //Mongoose connection
 const express = require("express");
 import { Request, Response } from "express";
+import { routes as userRoutes } from "./routes/v1/index.routes";
+const bodyParser = require("body-parser");
 const { Chalk } = require("./services/Chalk/chalk.service");
-require("./database/mongoConnection");
-const app = express();
 
-// Setting Port
+// Variables
 const PORT: number = Number(process.env.PORT) || 8000;
-//Global Variables
 const log = new Chalk();
 
+//Configuring Express
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 //@route : /
-//@desc : Hello World
+//@desc : Testing Route
 //@access : Public
-app.get("/", (request: Request, response: Response) => {
+app.use("/", (request: Request, response: Response) => {
 	response.status(200).send("I am alive!");
 });
+
+//------------Mounting Routes------------
+
+// User Controllers
+app.use("/v1", userRoutes);
 
 //LISTENING ON PORT
 app.listen(PORT, () => {
