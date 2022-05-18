@@ -4,7 +4,7 @@ type Info = {
 };
 
 type IError = {
-	error: Error;
+	error: Error | string;
 	place?: string;
 	functionName?: string;
 };

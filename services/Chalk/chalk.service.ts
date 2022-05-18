@@ -13,24 +13,17 @@ class Chalk {
 		);
 	}
 	error({ error, place, functionName }: IError) {
-		console.log(chalk.red.bold.bgWhite("----------Error Occured---------"));
-		place &&
-			console.table([
-				{
-					"Function Name": functionName,
-					"While Doing": place,
-					"Error Message": error.message,
-				},
-			]);
-		!place &&
-			console.table([
-				{
-					"Function Name": functionName,
-					"Error Message": error.message,
-				},
-			]);
+		console.log(chalk.red.bold.bgWhite("\n----------Error Occured---------"));
+		place && console.log(chalk.red.bold("While doing -> ") + place);
+		functionName &&
+			console.log(chalk.red.bold("Function Name -> ") + functionName);
+		if (typeof error === "string") {
+			console.log(chalk.red.bold.bgWhite("Error Message -> ") + error);
+		} else {
+			console.log(chalk.red.bold("Error Message -> ") + error.message);
+		}
 
-		console.log(chalk.bgRed.white("Whole Error =>", error));
+		console.log(chalk.red.bold.bgWhite("---------------------------------"));
 	}
 }
-exports.Chalk = Chalk;
+export { Chalk };
