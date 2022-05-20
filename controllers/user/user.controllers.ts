@@ -1,2 +1,4 @@
 import { signup } from "./signup";
-export { signup };
+import { verifyOTP } from "./verifyOTP";
+import { requestOTP } from "./requestOTP";
+export { signup, verifyOTP, requestOTP };
