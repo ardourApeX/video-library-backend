@@ -14,10 +14,9 @@ async function signup(req: Request, res: Response) {
 	try {
 		const { email, password: hash, name, avatar } = req.body;
 		let lastUpdate = new Date(Date.now() - 1000 * 60 * 3); //3 minutes ago
-		var newUser = null;
 
 		//Check if account already exists and isn't verified yet
-		newUser = await User.findOne({
+		var newUser = await User.findOne({
 			email,
 		});
 
@@ -76,7 +75,7 @@ async function signup(req: Request, res: Response) {
 		//Pending : Send OTP to user's email
 		await User.findOneAndUpdate(
 			{ email },
-			{ otp: otp, otpCreatedAt: new Date() }
+			{ otp: otp(), otpCreatedAt: new Date() }
 		);
 		return res
 			.status(201)

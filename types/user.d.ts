@@ -13,8 +13,8 @@ interface IUser {
 	isVerified?: boolean;
 	updatedAt: Date;
 	createdAt: Date;
-	otp?: number;
-	otpCreatedAt?: Date;
+	otp: number | null;
+	otpCreatedAt: Date | null;
 }
 
 interface ISignup {
