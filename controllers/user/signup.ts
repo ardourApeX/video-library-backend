@@ -1,7 +1,8 @@
-//Modules, Packages
+//Modules, Packages, helpers
 import { Response, Request } from "express";
 import { customErrorHandler } from "../../helpers/customErrorHandler";
 import { otp } from "../../helpers/otpGenerator";
+import { encryption } from "../../helpers/encryption";
 
 //Models
 import User from "../../schemas/user/user.model";
@@ -12,7 +13,14 @@ import User from "../../schemas/user/user.model";
 //@desc : Signing up a new user
 async function signup(req: Request, res: Response) {
 	try {
-		const { email, password: hash, name, avatar } = req.body;
+		const { email, password, name, avatar } = req.body;
+
+		let encryptionData = await encryption(password);
+		if (!encryptionData.success) {
+			customErrorHandler(encryptionData.error, res);
+		}
+		const { hash, salt } = encryptionData;
+
 		let lastUpdate = new Date(Date.now() - 1000 * 60 * 3); //3 minutes ago
 
 		//Check if account already exists and isn't verified yet
@@ -34,7 +42,7 @@ async function signup(req: Request, res: Response) {
 						name,
 						password: {
 							hash,
-							salt: "",
+							salt,
 						},
 						avatar,
 						//Remove otp otherwise it will be sent to user
@@ -65,7 +73,7 @@ async function signup(req: Request, res: Response) {
 				name,
 				password: {
 					hash,
-					salt: "",
+					salt,
 				},
 				avatar,
 			});
