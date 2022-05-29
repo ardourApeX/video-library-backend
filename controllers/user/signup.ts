@@ -11,32 +11,38 @@ import User from "../../schemas/user/user.model";
 //@method : PUT
 //@access : Public
 //@desc : Signing up a new user
+
 async function signup(req: Request, res: Response) {
 	try {
 		const { email, password, name, avatar } = req.body;
-
-		let encryptionData = await encryption(password);
-		if (!encryptionData.success) {
-			customErrorHandler(encryptionData.error, res);
-		}
-		const { hash, salt } = encryptionData;
-
 		let lastUpdate = new Date(Date.now() - 1000 * 60 * 3); //3 minutes ago
 
-		//Check if account already exists and isn't verified yet
+		//Generating hash and salt
+		let encryptionData = await encryption(password);
+		let hash;
+		let salt;
+		if (!encryptionData.success && encryptionData?.message) {
+			throw new Error(encryptionData.message);
+		} else if (encryptionData.success) {
+			hash = encryptionData.hash;
+			salt = encryptionData.salt;
+		}
+
+		//Get user by email
 		var newUser = await User.findOne({
 			email,
 		});
 
 		//If user already exists
 		if (newUser !== null) {
-			//Check if user is already verified or been a while since last update
+			//Check if its been more than 3 min since the OTP was sent for verification and if the user is not verified
 			if (
 				newUser.isVerified === false &&
 				newUser.updatedAt &&
 				newUser.updatedAt <= lastUpdate
 			) {
-				newUser = await User.findOneAndUpdate(
+				//Overrite the user
+				await User.findOneAndUpdate(
 					{ email },
 					{
 						name,
@@ -45,14 +51,6 @@ async function signup(req: Request, res: Response) {
 							salt,
 						},
 						avatar,
-						//Remove otp otherwise it will be sent to user
-						$unset: {
-							otp: null,
-							otpCreatedAt: null,
-						},
-					},
-					{
-						new: true,
 					}
 				);
 			}
@@ -64,10 +62,8 @@ async function signup(req: Request, res: Response) {
 					message: "Account already exists",
 				});
 			}
-		}
-		//If account doesn't exist, create new one
-		else {
-			newUser = await User.create({
+		} else {
+			await User.create({
 				email,
 				name,
 				password: {

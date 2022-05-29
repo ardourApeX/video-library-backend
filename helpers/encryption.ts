@@ -1,11 +1,25 @@
-const bcrypt = require("bcrypt");
-async function encryption(password: string, saltRounds = 10) {
+const crypto = require("crypto");
+async function encryption(
+	password: string,
+	saltRounds = 10
+): Promise<
+	| { success: true; hash: string; salt: string }
+	| { success: false; message: string }
+> {
 	try {
-		const salt: string = await bcrypt.genSalt(saltRounds);
-		const encryptedData: string = await bcrypt.hash(password, salt);
-		return { success: true, hash: encryptedData, salt };
+		const salt = crypto.randomBytes(16).toString("base64");
+		console.log(typeof salt);
+		const hash = await crypto
+			.pbkdf2Sync(password, salt, saltRounds, 64, "sha512")
+			.toString("base64");
+		return { success: true, hash, salt };
 	} catch (error) {
-		return { success: false, error };
+		if (error instanceof Error) {
+			console.log(error.message);
+			return { success: false, message: error.message };
+		}
+		console.log(error);
+		return { success: false, message: "Something went wrong" };
 	}
 }
 export { encryption };
