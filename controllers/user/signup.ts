@@ -62,7 +62,6 @@ async function signup(req: Request, res: Response) {
 				return res.status(409).json({
 					success: false,
 					message: "Account already exists",
-					data: [],
 				});
 			}
 		}
@@ -85,9 +84,7 @@ async function signup(req: Request, res: Response) {
 			{ email },
 			{ otp: otp(), otpCreatedAt: new Date() }
 		);
-		return res
-			.status(201)
-			.json({ success: true, message: "User created", data: newUser });
+		return res.status(201).json({ success: true, message: "User created" });
 	} catch (e) {
 		customErrorHandler(e, res, "signup", `while siging up user`);
 	}
