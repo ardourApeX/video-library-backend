@@ -23,6 +23,10 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
 		"Access-Control-Allow-Headers",
 		"Origin, X-Requested-With, Content-Type, Accept"
 	);
+	res.header(
+		"Access-Control-Allow-Methods",
+		"PUT, POST, GET, DELETE, UPDATE, PATCH"
+	);
 	next();
 });
 

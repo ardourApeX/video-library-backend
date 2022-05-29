@@ -15,7 +15,10 @@ const userSchema = new Schema(
 		},
 		avatar: { type: String },
 		password: {
-			hash: String,
+			hash: {
+				type: String,
+				required: [true, "Password is required for User"],
+			},
 			salt: String,
 		},
 		isVerified: {
