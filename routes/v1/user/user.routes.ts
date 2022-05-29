@@ -8,7 +8,7 @@ import {
 } from "../../../controllers/user/user.controllers";
 
 const routes = Router();
-routes.post("/signup", signup);
+routes.put("/signup", signup);
 routes.post("/verifyotp", verifyOTP);
 routes.post("/requestOTP", requestOTP);
 export { routes };

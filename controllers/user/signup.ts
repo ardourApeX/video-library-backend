@@ -8,7 +8,7 @@ import { encryption } from "../../helpers/encryption";
 import User from "../../schemas/user/user.model";
 
 //@route : /v1/user/signup
-//@method : POST
+//@method : PUT
 //@access : Public
 //@desc : Signing up a new user
 async function signup(req: Request, res: Response) {
@@ -59,7 +59,7 @@ async function signup(req: Request, res: Response) {
 
 			//If user is verified or it hasn't been 3 minutes since last update
 			else {
-				return res.status(409).send({
+				return res.status(409).json({
 					success: false,
 					message: "Account already exists",
 					data: [],
@@ -87,7 +87,7 @@ async function signup(req: Request, res: Response) {
 		);
 		return res
 			.status(201)
-			.send({ success: true, message: "User created", data: newUser });
+			.json({ success: true, message: "User created", data: newUser });
 	} catch (e) {
 		customErrorHandler(e, res, "signup", `while siging up user`);
 	}

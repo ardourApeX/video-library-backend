@@ -19,7 +19,7 @@ async function requestOTP(req: Request, res: Response) {
 			{ email },
 			{ otp: otp(), otpCreatedAt: new Date() }
 		);
-		return res.status(200).send({ success: 200, message: "OTP Sent" });
+		return res.status(200).json({ success: 200, message: "OTP Sent" });
 	} catch (error) {
 		customErrorHandler(error, res);
 	}

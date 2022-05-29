@@ -17,7 +17,7 @@ async function verifyOTP(req: Request, res: Response) {
 		var user = await User.findOne({ email });
 		if (user) {
 			if (user.otpCreatedAt && user.otpCreatedAt <= otpTime) {
-				return res.status(409).send({
+				return res.status(409).json({
 					success: false,
 					message: "OTP has been expired. Please request a new one.",
 				});
@@ -27,13 +27,13 @@ async function verifyOTP(req: Request, res: Response) {
 						{ email },
 						{ isVerified: true, $unset: { otp: null, otpCreatedAt: null } }
 					);
-					return res.status(200).send({
+					return res.status(200).json({
 						success: true,
 						message: "Account verified",
 						data: [],
 					});
 				} else {
-					return res.status(409).send({
+					return res.status(409).json({
 						success: false,
 						message: "OTP is incorrect",
 					});
@@ -42,7 +42,7 @@ async function verifyOTP(req: Request, res: Response) {
 		} else {
 			return res
 				.status(404)
-				.send({ success: false, message: "User not found" });
+				.json({ success: false, message: "User not found" });
 		}
 	} catch (error) {
 		customErrorHandler(error, res);

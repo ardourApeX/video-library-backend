@@ -16,13 +16,13 @@ function customErrorHandler(
 			functionName,
 			place,
 		});
-		return res.status(500).send({ success: false, message: error.message });
+		return res.status(500).json({ success: false, message: error.message });
 	} else {
 		log.error({
 			error: String(error),
 			place: functionName,
 		});
-		return res.status(500).send({ success: false, message: String(error) });
+		return res.status(500).json({ success: false, message: String(error) });
 	}
 }
 export { customErrorHandler };

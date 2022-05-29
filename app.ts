@@ -1,10 +1,12 @@
 "use strict";
 require("./database/mongoConnection"); //Mongoose connection
 const express = require("express");
-import { Request, Response } from "express";
-import { routes as userRoutes } from "./routes/v1/index.routes";
 const bodyParser = require("body-parser");
 const { Chalk } = require("./services/Chalk/chalk.service");
+import { NextFunction, Request, Response } from "express";
+
+//Routes
+import { routes as userRoutes } from "./routes/v1/index.routes";
 
 // Variables
 const PORT: number = Number(process.env.PORT) || 8000;
@@ -14,6 +16,15 @@ const log = new Chalk();
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(function (req: Request, res: Response, next: NextFunction) {
+	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+	res.header(
+		"Access-Control-Allow-Headers",
+		"Origin, X-Requested-With, Content-Type, Accept"
+	);
+	next();
+});
 
 //------------Mounting Routes------------
 
