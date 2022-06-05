@@ -1,4 +1,7 @@
+import { ObjectId } from "mongoose";
+
 interface IUser {
+	_id: ObjectId;
 	name: string;
 	email: {
 		type: string;

@@ -1,10 +1,12 @@
 "use strict";
 require("./database/mongoConnection"); //Mongoose connection
 const express = require("express");
+const cookieParser = require("cookie-parser");
+
 const bodyParser = require("body-parser");
 const { Chalk } = require("./services/Chalk/chalk.service");
 import { NextFunction, Request, Response } from "express";
-
+const cors = require("cors");
 //Routes
 import { routes as userRoutes } from "./routes/v1/index.routes";
 
@@ -14,21 +16,17 @@ const log = new Chalk();
 
 //Configuring Express
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
-app.use(function (req: Request, res: Response, next: NextFunction) {
-	res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-	res.header(
-		"Access-Control-Allow-Headers",
-		"Origin, X-Requested-With, Content-Type, Accept"
-	);
-	res.header(
-		"Access-Control-Allow-Methods",
-		"PUT, POST, GET, DELETE, UPDATE, PATCH"
-	);
-	next();
-});
+app.use(
+	cors({
+		credentials: true,
+		origin: "http://localhost:3000",
+	})
+);
+app.use(cookieParser());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //------------Mounting Routes------------
 

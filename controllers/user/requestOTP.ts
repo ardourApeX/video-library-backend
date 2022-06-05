@@ -7,7 +7,7 @@ import { otp } from "../../helpers/otpGenerator";
 import User from "../../schemas/user/user.model";
 
 //@route : /v1/user/requestOtp?email=
-//@method : POST
+//@method : GET
 //@access : Public
 //@desc : Requesting new OTP for user
 async function requestOTP(req: Request, res: Response) {

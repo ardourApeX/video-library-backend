@@ -3,7 +3,7 @@ import { Response, Request } from "express";
 import { customErrorHandler } from "../../helpers/customErrorHandler";
 import { otp } from "../../helpers/otpGenerator";
 import { encryption } from "../../helpers/encryption";
-
+import { IUser } from "../../types/user";
 //Models
 import User from "../../schemas/user/user.model";
 
@@ -76,7 +76,7 @@ async function signup(req: Request, res: Response) {
 
 		//Now send OTP to user's email
 		//Pending : Send OTP to user's email
-		await User.findOneAndUpdate(
+		await User.findOneAndUpdate<IUser>(
 			{ email },
 			{ otp: otp(), otpCreatedAt: new Date() }
 		);
