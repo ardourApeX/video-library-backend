@@ -13,7 +13,11 @@ const userSchema = new Schema(
 			unique: [true, "Email already exists"],
 			required: [true, "Email is required for User"],
 		},
-		avatar: { type: String },
+		avatar: {
+			type: String,
+			default:
+				"https://media.istockphoto.com/vectors/user-member-vector-icon-for-ui-user-interface-or-profile-face-avatar-vector-id1130884625?k=20&m=1130884625&s=612x612&w=0&h=OITK5Otm_lRj7Cx8mBhm7NtLTEHvp6v3XnZFLZmuB9o=",
+		},
 		password: {
 			hash: {
 				type: String,
