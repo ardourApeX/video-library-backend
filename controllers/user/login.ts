@@ -29,7 +29,7 @@ async function login(req: Request, res: Response) {
 		);
 		const refreshToken = generateJWT({ _id: userDetails._id }, "7d");
 		res.cookie("refreshToken", refreshToken, {
-			path: "/cookie",
+			path: "/v1/user/private/refresh-token",
 			sameSite: "strict",
 			httpOnly: true,
 			secure: true,
