@@ -1,2 +1,3 @@
 import { addVideo } from './addVideo';
-export { addVideo };
+import getVideos from './getVideos';
+export { addVideo, getVideos };
